@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class InitSchema1700000000000 implements MigrationInterface {
-  name = 'InitSchema1700000000000';
+  name = "InitSchema1700000000000";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS btree_gist');
+    await queryRunner.query("CREATE EXTENSION IF NOT EXISTS btree_gist");
 
     await queryRunner.query(`
       CREATE TABLE clinics (
@@ -113,31 +113,31 @@ export class InitSchema1700000000000 implements MigrationInterface {
     `);
 
     await queryRunner.query(
-      'CREATE INDEX idx_appointments_doctor ON appointments(doctor_id)',
+      "CREATE INDEX idx_appointments_doctor ON appointments(doctor_id)",
     );
     await queryRunner.query(
-      'CREATE INDEX idx_appointments_patient ON appointments(patient_id)',
+      "CREATE INDEX idx_appointments_patient ON appointments(patient_id)",
     );
     await queryRunner.query(
-      'CREATE INDEX idx_appointments_clinic ON appointments(clinic_id)',
+      "CREATE INDEX idx_appointments_clinic ON appointments(clinic_id)",
     );
     await queryRunner.query(
-      'CREATE INDEX idx_availability_rules_doctor ON availability_rules(doctor_id)',
+      "CREATE INDEX idx_availability_rules_doctor ON availability_rules(doctor_id)",
     );
     await queryRunner.query(
-      'CREATE INDEX idx_time_offs_doctor ON time_offs(doctor_id)',
+      "CREATE INDEX idx_time_offs_doctor ON time_offs(doctor_id)",
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('DROP TABLE IF EXISTS appointments');
-    await queryRunner.query('DROP TABLE IF EXISTS patients');
-    await queryRunner.query('DROP TABLE IF EXISTS time_offs');
-    await queryRunner.query('DROP TABLE IF EXISTS availability_rules');
-    await queryRunner.query('DROP TABLE IF EXISTS services');
-    await queryRunner.query('DROP TABLE IF EXISTS doctor_specialties');
-    await queryRunner.query('DROP TABLE IF EXISTS doctors');
-    await queryRunner.query('DROP TABLE IF EXISTS specialties');
-    await queryRunner.query('DROP TABLE IF EXISTS clinics');
+    await queryRunner.query("DROP TABLE IF EXISTS appointments");
+    await queryRunner.query("DROP TABLE IF EXISTS patients");
+    await queryRunner.query("DROP TABLE IF EXISTS time_offs");
+    await queryRunner.query("DROP TABLE IF EXISTS availability_rules");
+    await queryRunner.query("DROP TABLE IF EXISTS services");
+    await queryRunner.query("DROP TABLE IF EXISTS doctor_specialties");
+    await queryRunner.query("DROP TABLE IF EXISTS doctors");
+    await queryRunner.query("DROP TABLE IF EXISTS specialties");
+    await queryRunner.query("DROP TABLE IF EXISTS clinics");
   }
 }

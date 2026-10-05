@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('doctor_specialties')
+@Entity("doctor_specialties")
 export class DoctorSpecialty {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ name: 'doctor_id' })
+  @Column({ name: "doctor_id" })
   doctorId: string;
 
-  @Column({ name: 'specialty_id' })
+  @Column({ name: "specialty_id" })
   specialtyId: string;
 }

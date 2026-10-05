@@ -4,46 +4,46 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity('appointments')
+@Entity("appointments")
 export class Appointment {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ name: 'clinic_id' })
+  @Column({ name: "clinic_id" })
   clinicId: string;
 
-  @Column({ name: 'doctor_id' })
+  @Column({ name: "doctor_id" })
   doctorId: string;
 
-  @Column({ name: 'patient_id' })
+  @Column({ name: "patient_id" })
   patientId: string;
 
-  @Column({ name: 'service_id' })
+  @Column({ name: "service_id" })
   serviceId: string;
 
-  @Column({ name: 'starts_at', type: 'timestamptz' })
+  @Column({ name: "starts_at", type: "timestamptz" })
   startsAt: Date;
 
-  @Column({ name: 'ends_at', type: 'timestamptz' })
+  @Column({ name: "ends_at", type: "timestamptz" })
   endsAt: Date;
 
-  @Column({ default: 'confirmed' })
+  @Column({ default: "confirmed" })
   status: string;
 
   @Column()
   source: string;
 
-  @Column({ name: 'payment_link', nullable: true })
+  @Column({ name: "payment_link", nullable: true })
   paymentLink: string | null;
 
-  @Column({ name: 'payment_status', nullable: true })
+  @Column({ name: "payment_status", nullable: true })
   paymentStatus: string | null;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 }
