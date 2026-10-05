@@ -3,20 +3,20 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity("time_offs")
 export class TimeOff {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column({ name: "clinic_id" })
-  clinicId: string;
+  clinicId!: string;
 
   @Column({ name: "doctor_id" })
-  doctorId: string;
+  doctorId!: string;
 
   @Column({ name: "starts_at", type: "timestamptz" })
-  startsAt: Date;
+  startsAt!: Date;
 
   @Column({ name: "ends_at", type: "timestamptz" })
-  endsAt: Date;
+  endsAt!: Date;
 
-  @Column({ nullable: true })
-  reason: string | null;
+  @Column({ type: "text", nullable: true })
+  reason!: string | null;
 }

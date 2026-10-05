@@ -6,10 +6,12 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { Clinic } from "../entities/clinic.entity";
 import { Appointment } from "../entities/appointment.entity";
 import { Doctor } from "../entities/doctor.entity";
 import { Patient } from "../entities/patient.entity";
 import { Service } from "../entities/service.entity";
+import { WebhookService } from "../webhook/webhook.service";
 import { CreateAppointmentDto } from "./create-appointment.dto";
 import { RescheduleAppointmentDto } from "./reschedule-appointment.dto";
 
@@ -24,13 +26,14 @@ export class AppointmentService {
     private readonly patients: Repository<Patient>,
     @InjectRepository(Service)
     private readonly services: Repository<Service>,
+    private readonly webhook: WebhookService,
   ) {}
 
-  async create(clinicId: string, dto: CreateAppointmentDto) {
+  async create(clinic: Clinic, dto: CreateAppointmentDto) {
     const [doctor, patient, service] = await Promise.all([
-      this.doctors.findOne({ where: { id: dto.doctorId, clinicId } }),
-      this.patients.findOne({ where: { id: dto.patientId, clinicId } }),
-      this.services.findOne({ where: { id: dto.serviceId, clinicId } }),
+      this.doctors.findOne({ where: { id: dto.doctorId, clinicId: clinic.id } }),
+      this.patients.findOne({ where: { id: dto.patientId, clinicId: clinic.id } }),
+      this.services.findOne({ where: { id: dto.serviceId, clinicId: clinic.id } }),
     ]);
 
     if (!doctor) throw new NotFoundException("Doctor not found");
@@ -44,9 +47,10 @@ export class AppointmentService {
 
     const endsAt = new Date(startsAt.getTime() + service.durationMin * 60_000);
 
+    let appointment: Appointment;
     try {
-      return await this.appointments.save({
-        clinicId,
+      appointment = await this.appointments.save({
+        clinicId: clinic.id,
         doctorId: dto.doctorId,
         patientId: dto.patientId,
         serviceId: dto.serviceId,
@@ -61,11 +65,14 @@ export class AppointmentService {
       }
       throw error;
     }
+
+    await this.webhook.notifyAppointmentCreated(clinic, appointment);
+    return appointment;
   }
 
-  async cancel(clinicId: string, id: string) {
+  async cancel(clinic: Clinic, id: string) {
     const appointment = await this.appointments.findOne({
-      where: { id, clinicId },
+      where: { id, clinicId: clinic.id },
     });
     if (!appointment) throw new NotFoundException("Appointment not found");
     if (appointment.status === "cancelled") {
@@ -74,15 +81,17 @@ export class AppointmentService {
 
     appointment.status = "cancelled";
     await this.appointments.save(appointment);
+
+    await this.webhook.notifyAppointmentCancelled(clinic, appointment);
   }
 
   async reschedule(
-    clinicId: string,
+    clinic: Clinic,
     id: string,
     dto: RescheduleAppointmentDto,
   ) {
     const appointment = await this.appointments.findOne({
-      where: { id, clinicId },
+      where: { id, clinicId: clinic.id },
     });
     if (!appointment) throw new NotFoundException("Appointment not found");
     if (appointment.status === "cancelled") {
@@ -90,7 +99,7 @@ export class AppointmentService {
     }
 
     const service = await this.services.findOne({
-      where: { id: appointment.serviceId, clinicId },
+      where: { id: appointment.serviceId, clinicId: clinic.id },
     });
     if (!service) throw new NotFoundException("Service not found");
 

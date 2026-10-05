@@ -3,11 +3,11 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity("doctor_specialties")
 export class DoctorSpecialty {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column({ name: "doctor_id" })
-  doctorId: string;
+  doctorId!: string;
 
   @Column({ name: "specialty_id" })
-  specialtyId: string;
+  specialtyId!: string;
 }

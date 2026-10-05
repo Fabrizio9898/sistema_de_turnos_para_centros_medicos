@@ -3,17 +3,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity("services")
 export class Service {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column({ name: "clinic_id" })
-  clinicId: string;
+  clinicId!: string;
 
   @Column({ name: "doctor_id" })
-  doctorId: string;
+  doctorId!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ name: "duration_min" })
-  durationMin: number;
+  durationMin!: number;
 }

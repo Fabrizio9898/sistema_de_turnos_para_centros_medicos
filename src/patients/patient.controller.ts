@@ -1,12 +1,10 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
-import { ApiKeyGuard } from "../auth/api-key.guard";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { CurrentClinic } from "../auth/current-clinic.decorator";
 import { Clinic } from "../entities/clinic.entity";
 import { CreatePatientDto } from "./create-patient.dto";
 import { PatientService } from "./patient.service";
 
 @Controller("patients")
-@UseGuards(ApiKeyGuard)
 export class PatientController {
   constructor(private readonly patients: PatientService) {}
 

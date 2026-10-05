@@ -24,6 +24,6 @@ export const AppDataSource = new DataSource({
     Patient,
     Appointment,
   ],
-  migrations: [__dirname + "/database/migrations/*.js"],
+  migrations: [__dirname + "/database/migrations/*.{js,ts}"],
   synchronize: false,
 });

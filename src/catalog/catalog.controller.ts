@@ -1,17 +1,9 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  UseGuards,
-} from "@nestjs/common";
-import { ApiKeyGuard } from "../auth/api-key.guard";
+import { Controller, Get, Param, ParseUUIDPipe } from "@nestjs/common";
 import { CurrentClinic } from "../auth/current-clinic.decorator";
 import { Clinic } from "../entities/clinic.entity";
 import { CatalogService } from "./catalog.service";
 
 @Controller("specialties")
-@UseGuards(ApiKeyGuard)
 export class CatalogController {
   constructor(private readonly catalog: CatalogService) {}
 

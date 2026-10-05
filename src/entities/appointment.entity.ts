@@ -9,41 +9,41 @@ import {
 @Entity("appointments")
 export class Appointment {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column({ name: "clinic_id" })
-  clinicId: string;
+  clinicId!: string;
 
   @Column({ name: "doctor_id" })
-  doctorId: string;
+  doctorId!: string;
 
   @Column({ name: "patient_id" })
-  patientId: string;
+  patientId!: string;
 
   @Column({ name: "service_id" })
-  serviceId: string;
+  serviceId!: string;
 
   @Column({ name: "starts_at", type: "timestamptz" })
-  startsAt: Date;
+  startsAt!: Date;
 
   @Column({ name: "ends_at", type: "timestamptz" })
-  endsAt: Date;
+  endsAt!: Date;
 
   @Column({ default: "confirmed" })
-  status: string;
+  status!: string;
 
   @Column()
-  source: string;
+  source!: string;
 
-  @Column({ name: "payment_link", nullable: true })
-  paymentLink: string | null;
+  @Column({ name: "payment_link", type: "varchar", nullable: true })
+  paymentLink!: string | null;
 
-  @Column({ name: "payment_status", nullable: true })
-  paymentStatus: string | null;
+  @Column({ name: "payment_status", type: "varchar", nullable: true })
+  paymentStatus!: string | null;
 
   @CreateDateColumn({ name: "created_at" })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: "updated_at" })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

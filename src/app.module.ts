@@ -8,6 +8,7 @@ import { CatalogModule } from "./catalog/catalog.module";
 import { AvailabilityModule } from "./availability/availability.module";
 import { AppointmentModule } from "./appointments/appointment.module";
 import { PatientModule } from "./patients/patient.module";
+import { WebhookModule } from "./webhook/webhook.module";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PatientModule } from "./patients/patient.module";
     AvailabilityModule,
     AppointmentModule,
     PatientModule,
+    WebhookModule,
   ],
 })
 export class AppModule {}

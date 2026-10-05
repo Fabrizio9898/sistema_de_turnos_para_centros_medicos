@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Query,
-  UseGuards,
-} from "@nestjs/common";
-import { ApiKeyGuard } from "../auth/api-key.guard";
+import { Controller, Get, Param, ParseUUIDPipe, Query } from "@nestjs/common";
 import { CurrentClinic } from "../auth/current-clinic.decorator";
 import { Clinic } from "../entities/clinic.entity";
 import { AvailabilityService } from "./availability.service";
 import { GetSlotsQuery } from "./get-slots.query";
 
 @Controller("doctors")
-@UseGuards(ApiKeyGuard)
 export class AvailabilityController {
   constructor(private readonly availability: AvailabilityService) {}
 

@@ -1,4 +1,4 @@
-import { AppDataSource } from "../../data-source";
+import { AppDataSource } from "../../src/data-source";
 
 describe("no_double_booking constraint", () => {
   let clinicId: string;

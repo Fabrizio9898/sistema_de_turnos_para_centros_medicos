@@ -4,20 +4,20 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
 @Unique(["clinicId", "phone"])
 export class Patient {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column({ name: "clinic_id" })
-  clinicId: string;
+  clinicId!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  phone: string;
+  phone!: string;
 
-  @Column({ name: "telegram_chat_id", nullable: true })
-  telegramChatId: string | null;
+  @Column({ name: "telegram_chat_id", type: "varchar", nullable: true })
+  telegramChatId!: string | null;
 
-  @Column({ name: "whatsapp_id", nullable: true })
-  whatsappId: string | null;
+  @Column({ name: "whatsapp_id", type: "varchar", nullable: true })
+  whatsappId!: string | null;
 }
