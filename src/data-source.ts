@@ -9,6 +9,7 @@ import { AvailabilityRule } from "./entities/availability-rule.entity";
 import { TimeOff } from "./entities/time-off.entity";
 import { Patient } from "./entities/patient.entity";
 import { Appointment } from "./entities/appointment.entity";
+import { User } from "./entities/user.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -23,6 +24,7 @@ export const AppDataSource = new DataSource({
     TimeOff,
     Patient,
     Appointment,
+    User,
   ],
   migrations: [__dirname + "/database/migrations/*.{js,ts}"],
   synchronize: false,

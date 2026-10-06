@@ -6,8 +6,8 @@
   "scripts": {
     "build": "nest build",
     "start": "node dist/main",
-    "start:dev": "nest start --watch",
-    "start:prod": "node dist/main",
+    "start:dev": "nest start --watch --env-file=.env.development",
+    "start:prod": "node dist/main --env-file=.env.production",
     "lint": "eslint \"src/**/*.ts\" --max-warnings 0",
     "format": "prettier --write \"src/**/*.ts\"",
     "typecheck": "tsc --noEmit",
@@ -16,6 +16,8 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
+    "migration:run:dev": "node --env-file=.env.development -r ts-node/register -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
+    "migration:run:prod": "node --env-file=.env.production -r ts-node/register -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source.ts",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source.ts"
   },
@@ -36,6 +38,7 @@
     "date-fns-tz": "^3.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "fastify": "^5.12.5",
     "nestjs-pino": "^4.5.0",
     "passport": "^0.7.0",
     "passport-custom": "^1.2.1",

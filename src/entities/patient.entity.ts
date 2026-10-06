@@ -1,4 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from "typeorm";
+import { Clinic } from "./clinic.entity";
+import { Appointment } from "./appointment.entity";
 
 @Entity("patients")
 @Unique(["clinicId", "phone"])
@@ -9,6 +19,10 @@ export class Patient {
 
   @Column({ name: "clinic_id" })
   clinicId!: string;
+
+  @ManyToOne(() => Clinic, (clinic) => clinic.patients, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "clinic_id" })
+  clinic!: Clinic;
 
   @Column()
   name!: string;
@@ -24,4 +38,7 @@ export class Patient {
 
   @Column({ name: "whatsapp_id", type: "varchar", nullable: true })
   whatsappId!: string | null;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.patient)
+  appointments!: Appointment[];
 }

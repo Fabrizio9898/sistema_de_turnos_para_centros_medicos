@@ -1,10 +1,14 @@
 import { UserRole } from "@/enums/roles.enum";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
+import { Clinic } from "./clinic.entity";
+import { Doctor } from "./doctor.entity";
 
 @Entity("users")
 export class User {
@@ -17,17 +21,25 @@ export class User {
   @Column()
   email!: string;
 
-  @Column({
-    type: "enum",
-    enum: UserRole,
-  })
-  role!: UserRole;
+  @Column({ type: "varchar", nullable: true })
+  name!: string | null;
+
+  @Column({ type: "enum", enum: UserRole, nullable: true })
+  role!: UserRole | null;
 
   @Column({ name: "clinic_id", nullable: true })
   clinicId!: string | null;
 
+  @ManyToOne(() => Clinic, (clinic) => clinic.users, { onDelete: "SET NULL" })
+  @JoinColumn({ name: "clinic_id" })
+  clinic!: Clinic | null;
+
   @Column({ name: "doctor_id", nullable: true })
   doctorId!: string | null;
+
+  @ManyToOne(() => Doctor, (doctor) => doctor.users, { onDelete: "SET NULL" })
+  @JoinColumn({ name: "doctor_id" })
+  doctor!: Doctor | null;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

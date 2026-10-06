@@ -2,8 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Doctor } from "./doctor.entity";
+import { Patient } from "./patient.entity";
+import { Service } from "./service.entity";
+import { Specialty } from "./specialty.entity";
+import { AvailabilityRule } from "./availability-rule.entity";
+import { TimeOff } from "./time-off.entity";
+import { Appointment } from "./appointment.entity";
+import { User } from "./user.entity";
 
 @Entity("clinics")
 export class Clinic {
@@ -22,7 +31,6 @@ export class Clinic {
   @Column({ name: "webhook_url", type: "varchar", nullable: true })
   webhookUrl!: string | null;
 
-  /** Patient fields required to book (see src/patients/patient-fields.ts). */
   @Column("text", {
     name: "patient_required_fields",
     array: true,
@@ -32,4 +40,28 @@ export class Clinic {
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
+
+  @OneToMany(() => Doctor, (doctor) => doctor.clinic)
+  doctors!: Doctor[];
+
+  @OneToMany(() => Patient, (patient) => patient.clinic)
+  patients!: Patient[];
+
+  @OneToMany(() => Service, (service) => service.clinic)
+  services!: Service[];
+
+  @OneToMany(() => Specialty, (specialty) => specialty.clinic)
+  specialties!: Specialty[];
+
+  @OneToMany(() => AvailabilityRule, (rule) => rule.clinic)
+  availabilityRules!: AvailabilityRule[];
+
+  @OneToMany(() => TimeOff, (timeOff) => timeOff.clinic)
+  timeOffs!: TimeOff[];
+
+  @OneToMany(() => Appointment, (appointment) => appointment.clinic)
+  appointments!: Appointment[];
+
+  @OneToMany(() => User, (user) => user.clinic)
+  users!: User[];
 }

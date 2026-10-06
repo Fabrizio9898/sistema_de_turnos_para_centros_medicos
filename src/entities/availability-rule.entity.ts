@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Clinic } from "./clinic.entity";
+import { Doctor } from "./doctor.entity";
 
 @Entity("availability_rules")
 export class AvailabilityRule {
@@ -8,8 +16,20 @@ export class AvailabilityRule {
   @Column({ name: "clinic_id" })
   clinicId!: string;
 
+  @ManyToOne(() => Clinic, (clinic) => clinic.availabilityRules, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "clinic_id" })
+  clinic!: Clinic;
+
   @Column({ name: "doctor_id" })
   doctorId!: string;
+
+  @ManyToOne(() => Doctor, (doctor) => doctor.availabilityRules, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "doctor_id" })
+  doctor!: Doctor;
 
   @Column({ name: "day_of_week" })
   dayOfWeek!: number;

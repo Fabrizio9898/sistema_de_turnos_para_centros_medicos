@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { Specialty } from "../entities/specialty.entity";
-import { Doctor } from "../entities/doctor.entity";
-import { DoctorSpecialty } from "../entities/doctor-specialty.entity";
-import { Service } from "../entities/service.entity";
-import { Clinic } from "../entities/clinic.entity";
 import { PATIENT_FIELDS } from "../patients/patient-fields";
+import { Specialty } from "@/entities/specialty.entity";
+import { Doctor } from "@/entities/doctor.entity";
+import { DoctorSpecialty } from "@/entities/doctor-specialty.entity";
+import { Service } from "@/entities/service.entity";
+import { Clinic } from "@/entities/clinic.entity";
 
 @Injectable()
 export class CatalogService {
