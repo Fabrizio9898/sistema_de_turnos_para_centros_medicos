@@ -22,6 +22,14 @@ export class Clinic {
   @Column({ name: "webhook_url", type: "varchar", nullable: true })
   webhookUrl!: string | null;
 
+  /** Patient fields required to book (see src/patients/patient-fields.ts). */
+  @Column("text", {
+    name: "patient_required_fields",
+    array: true,
+    default: "{name,phone}",
+  })
+  patientRequiredFields!: string[];
+
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 }

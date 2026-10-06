@@ -8,11 +8,18 @@ describe("ApiKeyGuard", () => {
 
   beforeEach(() => {
     clinicsRepo = { findOne: jest.fn() };
-    guard = new ApiKeyGuard(clinicsRepo as never);
+    guard = new ApiKeyGuard(
+      clinicsRepo as never,
+      {
+        getAllAndOverride: () => false,
+      } as never,
+    );
   });
 
   it("throws 401 when x-api-key header is missing", async () => {
     const ctx = {
+      getHandler: () => undefined,
+      getClass: () => undefined,
       switchToHttp: () => ({
         getRequest: () => ({ headers: {} }),
       }),
@@ -25,6 +32,8 @@ describe("ApiKeyGuard", () => {
     clinicsRepo.findOne.mockResolvedValue(null);
 
     const ctx = {
+      getHandler: () => undefined,
+      getClass: () => undefined,
       switchToHttp: () => ({
         getRequest: () => ({ headers: { "x-api-key": "bad-key" } }),
       }),
@@ -41,6 +50,8 @@ describe("ApiKeyGuard", () => {
       headers: { "x-api-key": "good-key" },
     };
     const ctx = {
+      getHandler: () => undefined,
+      getClass: () => undefined,
       switchToHttp: () => ({ getRequest: () => request }),
     } as never;
 

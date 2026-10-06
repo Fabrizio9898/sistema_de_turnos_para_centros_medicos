@@ -1,22 +1,27 @@
+import { NotFoundException } from "@nestjs/common";
 import { CatalogService } from "./catalog.service";
 import { Specialty } from "../entities/specialty.entity";
 import { Doctor } from "../entities/doctor.entity";
 import { DoctorSpecialty } from "../entities/doctor-specialty.entity";
+import { Clinic } from "../entities/clinic.entity";
 
 describe("CatalogService", () => {
   let service: CatalogService;
   let specialties: { find: jest.Mock };
-  let doctors: { find: jest.Mock };
+  let doctors: { find: jest.Mock; findOne: jest.Mock };
   let doctorSpecialties: { find: jest.Mock };
+  let services: { find: jest.Mock };
 
   beforeEach(() => {
     specialties = { find: jest.fn() };
-    doctors = { find: jest.fn() };
+    doctors = { find: jest.fn(), findOne: jest.fn() };
     doctorSpecialties = { find: jest.fn() };
+    services = { find: jest.fn() };
     service = new CatalogService(
       specialties as never,
       doctors as never,
       doctorSpecialties as never,
+      services as never,
     );
   });
 
@@ -49,6 +54,7 @@ describe("CatalogService", () => {
         id: expect.objectContaining({ _type: "in" }),
         clinicId: "clinic-1",
       },
+      order: { name: "ASC" },
     });
   });
 
@@ -59,5 +65,43 @@ describe("CatalogService", () => {
 
     expect(result).toEqual([]);
     expect(doctors.find).not.toHaveBeenCalled();
+  });
+
+  describe("listDoctorServices", () => {
+    const clinic = {
+      id: "clinic-1",
+      patientRequiredFields: ["name", "phone"],
+    } as unknown as Clinic;
+
+    it("throws NotFoundException when doctor is not in the clinic", async () => {
+      doctors.findOne.mockResolvedValue(null);
+
+      await expect(service.listDoctorServices(clinic, "d1")).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(doctors.findOne).toHaveBeenCalledWith({
+        where: { id: "d1", clinicId: "clinic-1" },
+      });
+    });
+
+    it("returns services and the combined required patient fields", async () => {
+      doctors.findOne.mockResolvedValue({
+        id: "d1",
+        name: "Dra. Gómez",
+        patientRequiredFields: ["dni"],
+      });
+      services.find.mockResolvedValue([
+        { id: "s1", name: "Consulta", durationMin: 30, doctorId: "d1" },
+      ]);
+
+      const result = await service.listDoctorServices(clinic, "d1");
+
+      expect(result).toEqual({
+        doctorId: "d1",
+        doctorName: "Dra. Gómez",
+        patientRequiredFields: ["name", "phone", "dni"],
+        services: [{ id: "s1", name: "Consulta", durationMin: 30 }],
+      });
+    });
   });
 });

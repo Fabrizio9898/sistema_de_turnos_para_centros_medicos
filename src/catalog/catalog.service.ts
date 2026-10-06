@@ -1,9 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
 import { Specialty } from "../entities/specialty.entity";
 import { Doctor } from "../entities/doctor.entity";
 import { DoctorSpecialty } from "../entities/doctor-specialty.entity";
+import { Service } from "../entities/service.entity";
+import { Clinic } from "../entities/clinic.entity";
+import { PATIENT_FIELDS } from "../patients/patient-fields";
 
 @Injectable()
 export class CatalogService {
@@ -14,6 +17,8 @@ export class CatalogService {
     private readonly doctors: Repository<Doctor>,
     @InjectRepository(DoctorSpecialty)
     private readonly doctorSpecialties: Repository<DoctorSpecialty>,
+    @InjectRepository(Service)
+    private readonly services: Repository<Service>,
   ) {}
 
   listSpecialties(clinicId: string): Promise<Specialty[]> {
@@ -36,5 +41,36 @@ export class CatalogService {
       where: { id: In(doctorIds), clinicId },
       order: { name: "ASC" },
     });
+  }
+
+  /**
+   * Bookable services of a doctor, plus the patient fields the booking will
+   * require (clinic + doctor), so the bot can collect them up front.
+   */
+  async listDoctorServices(clinic: Clinic, doctorId: string) {
+    const doctor = await this.doctors.findOne({
+      where: { id: doctorId, clinicId: clinic.id },
+    });
+    if (!doctor) throw new NotFoundException("Doctor not found");
+
+    const services = await this.services.find({
+      where: { doctorId, clinicId: clinic.id },
+      order: { name: "ASC" },
+    });
+    const required = [
+      ...(clinic.patientRequiredFields ?? []),
+      ...(doctor.patientRequiredFields ?? []),
+    ];
+
+    return {
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      patientRequiredFields: PATIENT_FIELDS.filter((f) => required.includes(f)),
+      services: services.map((s) => ({
+        id: s.id,
+        name: s.name,
+        durationMin: s.durationMin,
+      })),
+    };
   }
 }

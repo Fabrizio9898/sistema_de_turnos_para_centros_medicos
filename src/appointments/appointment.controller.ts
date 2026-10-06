@@ -15,7 +15,10 @@ export class AppointmentController {
   }
 
   @Post(":id/cancel")
-  cancel(@CurrentClinic() clinic: Clinic, @Param("id", ParseUUIDPipe) id: string) {
+  cancel(
+    @CurrentClinic() clinic: Clinic,
+    @Param("id", ParseUUIDPipe) id: string,
+  ) {
     return this.appointments.cancel(clinic, id);
   }
 

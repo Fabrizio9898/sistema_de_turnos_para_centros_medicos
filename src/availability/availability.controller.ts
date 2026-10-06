@@ -14,12 +14,6 @@ export class AvailabilityController {
     @Param("id", ParseUUIDPipe) id: string,
     @Query() query: GetSlotsQuery,
   ) {
-    return this.availability.getSlots(
-      clinic.id,
-      id,
-      query.date,
-      query.serviceId,
-      clinic.timezone,
-    );
+    return this.availability.getSlots(clinic, id, query.date, query.serviceId);
   }
 }

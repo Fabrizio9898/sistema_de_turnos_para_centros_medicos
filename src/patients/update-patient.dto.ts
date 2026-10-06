@@ -1,21 +1,16 @@
-import { Transform } from "class-transformer";
 import { IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { DNI_PATTERN, NormalizeDni } from "./create-patient.dto";
 
-/** Accepts "12.345.678" or "12 345 678" and stores digits only. */
-export const NormalizeDni = () =>
-  Transform(({ value }) =>
-    typeof value === "string" ? value.replace(/[.\s-]/g, "") : value,
-  );
-export const DNI_PATTERN = /^\d{6,10}$/;
-
-export class CreatePatientDto {
+export class UpdatePatientDto {
+  @IsOptional()
   @IsString()
   @MinLength(1)
-  name: string;
+  name?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
-  phone: string;
+  phone?: string;
 
   @IsOptional()
   @NormalizeDni()

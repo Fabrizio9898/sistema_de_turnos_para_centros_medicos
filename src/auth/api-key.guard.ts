@@ -11,10 +11,12 @@ import { createHash } from "crypto";
 import { Clinic } from "../entities/clinic.entity";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
-const PEPPER = process.env.API_KEY_PEPPER ?? "dev-pepper-change-in-prod";
-
 export function hashApiKey(key: string): string {
-  return createHash("sha256").update(key + PEPPER).digest("hex");
+  // Read lazily: this module is imported before ConfigModule loads .env.
+  const pepper = process.env.API_KEY_PEPPER ?? "dev-pepper-change-in-prod";
+  return createHash("sha256")
+    .update(key + pepper)
+    .digest("hex");
 }
 
 @Injectable()

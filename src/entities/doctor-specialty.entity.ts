@@ -5,6 +5,9 @@ export class DoctorSpecialty {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column({ name: "clinic_id" })
+  clinicId!: string;
+
   @Column({ name: "doctor_id" })
   doctorId!: string;
 

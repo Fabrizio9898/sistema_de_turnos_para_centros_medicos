@@ -1,33 +1,44 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { HttpService } from "@nestjs/axios";
-import { firstValueFrom } from "rxjs";
+import axios from "axios";
 import { Clinic } from "../entities/clinic.entity";
 import { Appointment } from "../entities/appointment.entity";
+
+export type AppointmentEvent =
+  "appointment.created" | "appointment.cancelled" | "appointment.rescheduled";
 
 @Injectable()
 export class WebhookService {
   private readonly logger = new Logger(WebhookService.name);
 
-  constructor(private readonly http: HttpService) {}
-
   async notifyAppointmentCreated(
     clinic: Clinic,
     appointment: Appointment,
   ): Promise<void> {
-    if (!clinic.webhookUrl) return;
-    await this.send(clinic.webhookUrl, {
-      event: "appointment.created",
-      appointment: this.payload(appointment),
-    });
+    await this.notify(clinic, "appointment.created", appointment);
   }
 
   async notifyAppointmentCancelled(
     clinic: Clinic,
     appointment: Appointment,
   ): Promise<void> {
+    await this.notify(clinic, "appointment.cancelled", appointment);
+  }
+
+  async notifyAppointmentRescheduled(
+    clinic: Clinic,
+    appointment: Appointment,
+  ): Promise<void> {
+    await this.notify(clinic, "appointment.rescheduled", appointment);
+  }
+
+  private async notify(
+    clinic: Clinic,
+    event: AppointmentEvent,
+    appointment: Appointment,
+  ): Promise<void> {
     if (!clinic.webhookUrl) return;
     await this.send(clinic.webhookUrl, {
-      event: "appointment.cancelled",
+      event,
       appointment: this.payload(appointment),
     });
   }
@@ -48,14 +59,10 @@ export class WebhookService {
 
   private async send(url: string, payload: object): Promise<void> {
     try {
-      await firstValueFrom(
-        this.http.post(url, payload, { timeout: 5000 }),
-      );
+      await axios.post(url, payload, { timeout: 5000 });
       this.logger.log(`Webhook sent to ${url}`);
     } catch (error) {
-      this.logger.warn(
-        `Webhook failed to ${url}: ${error.message}`,
-      );
+      this.logger.warn(`Webhook failed to ${url}: ${(error as Error).message}`);
     }
   }
 }
