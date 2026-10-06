@@ -1,9 +1,9 @@
 import { NotFoundException } from "@nestjs/common";
 import { CatalogService } from "./catalog.service";
-import { Specialty } from "../entities/specialty.entity";
-import { Doctor } from "../entities/doctor.entity";
-import { DoctorSpecialty } from "../entities/doctor-specialty.entity";
-import { Clinic } from "../entities/clinic.entity";
+import { DoctorSpecialty } from "@/entities/doctor-specialty.entity";
+import { Specialty } from "@/entities/specialty.entity";
+import { Doctor } from "@/entities/doctor.entity";
+import { Clinic } from "@/entities/clinic.entity";
 
 describe("CatalogService", () => {
   let service: CatalogService;

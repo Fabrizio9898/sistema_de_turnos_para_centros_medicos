@@ -8,8 +8,8 @@ import { Reflector } from "@nestjs/core";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { createHash } from "crypto";
-import { Clinic } from "../entities/clinic.entity";
 import { IS_PUBLIC_KEY } from "./public.decorator";
+import { Clinic } from "@/entities/clinic.entity";
 
 export function hashApiKey(key: string): string {
   // Read lazily: this module is imported before ConfigModule loads .env.

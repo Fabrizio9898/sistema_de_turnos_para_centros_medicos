@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { AvailabilityService, dayOfWeek } from "./availability.service";
-import { Clinic } from "../entities/clinic.entity";
-import { AvailabilityRule } from "../entities/availability-rule.entity";
-import { Appointment } from "../entities/appointment.entity";
-import { Service } from "../entities/service.entity";
-import { TimeOff } from "../entities/time-off.entity";
+import { Clinic } from "../../entities/clinic.entity";
+import { AvailabilityRule } from "../../entities/availability-rule.entity";
+import { Appointment } from "../../entities/appointment.entity";
+import { Service } from "../../entities/service.entity";
+import { TimeOff } from "../../entities/time-off.entity";
 
 const TZ = "America/Argentina/Buenos_Aires"; // UTC-3, no DST
 // 2026-10-13 is a Tuesday.

@@ -1,6 +1,6 @@
+import { Clinic } from "@/entities/clinic.entity";
 import { ApiKeyGuard, hashApiKey } from "./api-key.guard";
 import { UnauthorizedException } from "@nestjs/common";
-import { Clinic } from "../entities/clinic.entity";
 
 describe("ApiKeyGuard", () => {
   let guard: ApiKeyGuard;

@@ -5,8 +5,8 @@ export class Doctor {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ name: "clinic_id" })
-  clinicId!: string;
+  @Column({ name: "clinic_id", nullable: true })
+  clinicId!: string | null;
 
   @Column()
   name!: string;

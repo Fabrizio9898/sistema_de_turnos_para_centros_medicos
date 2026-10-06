@@ -1,9 +1,10 @@
 import { Body, Controller, Param, ParseUUIDPipe, Post } from "@nestjs/common";
-import { CurrentClinic } from "../auth/current-clinic.decorator";
-import { Clinic } from "../entities/clinic.entity";
+
+import { Clinic } from "../../entities/clinic.entity";
 import { AppointmentService } from "./appointment.service";
 import { CreateAppointmentDto } from "./create-appointment.dto";
 import { RescheduleAppointmentDto } from "./reschedule-appointment.dto";
+import { CurrentClinic } from "../auth/current-clinic.decorator";
 
 @Controller("appointments")
 export class AppointmentController {

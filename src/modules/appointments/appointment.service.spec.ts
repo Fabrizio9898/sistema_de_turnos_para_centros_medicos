@@ -5,11 +5,11 @@ import {
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { AppointmentService } from "./appointment.service";
-import { Clinic } from "../entities/clinic.entity";
-import { Appointment } from "../entities/appointment.entity";
-import { Doctor } from "../entities/doctor.entity";
-import { Patient } from "../entities/patient.entity";
-import { Service } from "../entities/service.entity";
+import { Clinic } from "../../entities/clinic.entity";
+import { Appointment } from "../../entities/appointment.entity";
+import { Doctor } from "../../entities/doctor.entity";
+import { Patient } from "../../entities/patient.entity";
+import { Service } from "../../entities/service.entity";
 
 describe("AppointmentService", () => {
   let service: AppointmentService;

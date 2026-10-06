@@ -7,11 +7,11 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { LessThan, MoreThan, Not, Repository } from "typeorm";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-import { Clinic } from "../entities/clinic.entity";
-import { AvailabilityRule } from "../entities/availability-rule.entity";
-import { TimeOff } from "../entities/time-off.entity";
-import { Appointment } from "../entities/appointment.entity";
-import { Service } from "../entities/service.entity";
+import { Clinic } from "../../entities/clinic.entity";
+import { AvailabilityRule } from "../../entities/availability-rule.entity";
+import { TimeOff } from "../../entities/time-off.entity";
+import { Appointment } from "../../entities/appointment.entity";
+import { Service } from "../../entities/service.entity";
 
 interface Range {
   start: Date;

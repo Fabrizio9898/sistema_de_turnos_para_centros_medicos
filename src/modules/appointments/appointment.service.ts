@@ -6,16 +6,16 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Clinic } from "../entities/clinic.entity";
-import { Appointment } from "../entities/appointment.entity";
-import { Doctor } from "../entities/doctor.entity";
-import { Patient } from "../entities/patient.entity";
-import { Service } from "../entities/service.entity";
+import { Clinic } from "../../entities/clinic.entity";
+import { Appointment } from "../../entities/appointment.entity";
+import { Doctor } from "../../entities/doctor.entity";
+import { Patient } from "../../entities/patient.entity";
+import { Service } from "../../entities/service.entity";
 import { AvailabilityService } from "../availability/availability.service";
-import { missingPatientFields } from "../patients/patient-fields";
-import { WebhookService } from "../webhook/webhook.service";
+import { WebhookService } from "../../webhook/webhook.service";
 import { CreateAppointmentDto } from "./create-appointment.dto";
 import { RescheduleAppointmentDto } from "./reschedule-appointment.dto";
+import { missingPatientFields } from "../patients/patient-fields";
 
 const EXCLUSION_VIOLATION = "23P01";
 

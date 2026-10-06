@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseUUIDPipe } from "@nestjs/common";
 import { CurrentClinic } from "../auth/current-clinic.decorator";
-import { Clinic } from "../entities/clinic.entity";
 import { CatalogService } from "./catalog.service";
+import { Clinic } from "@/entities/clinic.entity";
 
 @Controller("specialties")
 export class CatalogController {
